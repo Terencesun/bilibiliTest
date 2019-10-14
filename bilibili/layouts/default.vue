@@ -1,55 +1,72 @@
 <template>
-  <div>
-    <nuxt />
+  <div class="bilibili-container">
+    <div class="bgimage"></div>
+    <div class="logo"></div>
+    <nuxt/>
   </div>
 </template>
 
-<style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<style lang="less">
+  html {
+    font-family: 'Segoe UI';
+    font-size: 16px;
+    word-spacing: 1px;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
-}
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+    margin: 0;
+  }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
+  .bilibili-container {
+    width: 100%;
+    height: 100%;
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
+    &:before {
+      content: '';
+      display: flex;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1;
+    }
 
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
+    &:after {
+      content: '';
+      display: flex;
+      position: absolute;
+      top: 5vh;
+      left: 5vh;
+      width: 200px;
+      height: 90px;
+      background-image: url('../assets/bilibili.png');
+      background-size: 200px 90px;
+      z-index: 2;
+    }
 
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
+    .bgimage {
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('../assets/background.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      filter: blur(1px);
+      z-index: 0;
+    }
+  }
+
 </style>

@@ -11,13 +11,17 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "nuxt": "^2.0.0",
+    "@antv/g2": "^3.5.8",
+    "@nuxtjs/axios": "^5.3.6",
+    "countup.js": "^2.0.4",
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
     "iview": "^3.1.5",
-    "@nuxtjs/axios": "^5.3.6"
+    "nuxt": "^2.0.0"
   },
   "devDependencies": {
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
     "nodemon": "^1.18.9"
   }
 }
