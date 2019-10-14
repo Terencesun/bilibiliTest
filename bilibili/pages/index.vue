@@ -34,6 +34,7 @@
 </template>
 
 <script>
+    import {brithdayUrl, sexUrl, levelUrl} from "./../api";
     import G2 from '@antv/g2';
     import {CountUp} from 'countup.js';
 
@@ -60,117 +61,108 @@
                 }
             },
             birthday_chart() {
-                const chart = new G2.Chart({
-                    container: 'birthday',
-                    forceFit: true,
-                    height: 400,
+                return new Promise((resolve, reject) => {
+                    this.$axios.get(brithdayUrl).then(res => {
+                        const chart = new G2.Chart({
+                            container: 'birthday',
+                            forceFit: true,
+                            height: 400,
+                        });
+                        const data = res.data.msg;
+                        chart.source(data);
+                        chart.axis('quarter', {
+                            label: {
+                                textStyle: {
+                                    fill: "#fff",
+                                }
+                            }
+                        });
+                        chart.axis('count', {
+                            label: {
+                                textStyle: {
+                                    fill: "#fff",
+                                }
+                            }
+                        });
+                        chart.legend(false);
+                        chart.interval().position('quarter*count').color('quarter');
+                        chart.render();
+                        resolve('ok');
+                    }).catch(e => {
+                        console.log(e);
+                        reject();
+                    });
                 });
-                const data = [
-                    {genre: 'Sports', sold: 275},
-                    {genre: 'Strategy', sold: 115},
-                    {genre: 'Action', sold: 120},
-                    {genre: 'Shooter', sold: 350},
-                    {genre: 'Other', sold: 150}
-                ];
-                chart.source(data);
-                chart.axis('genre', {
-                    label: {
-                        textStyle: {
-                            fill: "#fff",
-                        }
-                    }
-                });
-                chart.axis('sold', {
-                    label: {
-                        textStyle: {
-                            fill: "#fff",
-                        }
-                    }
-                });
-                chart.legend(false);
-                chart.interval().position('genre*sold').color('genre');
-                chart.render();
             },
             sex_chart() {
-                const chart = new G2.Chart({
-                    container: 'sex',
-                    forceFit: true,
-                    height: 400
+                return new Promise((resolve, reject) => {
+                    this.$axios.get(sexUrl).then(res => {
+                        const chart = new G2.Chart({
+                            container: 'sex',
+                            forceFit: true,
+                            height: 400
+                        });
+                        var data = res.data.msg;
+                        chart.source(data, {
+                            percent: {
+                                formatter: function formatter(val) {
+                                    val = val * 100 + '%';
+                                    return val;
+                                }
+                            }
+                        });
+                        chart.legend(false);
+                        chart.coord('theta', {
+                            radius: 0.75
+                        });
+                        chart.tooltip({
+                            showTitle: false,
+                            itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+                        });
+                        chart.axis('percent', {
+                            label: {
+                                textStyle: {
+                                    fill: "#fff",
+                                }
+                            }
+                        });
+                        chart.intervalStack().position('percent').color('title').label('percent', {
+                            formatter: function formatter(val, item) {
+                                return item.point.title + ': ' + val;
+                            },
+                            textStyle: {
+                                fill: "#fff",
+                            },
+                        }).tooltip('title*percent', function (title, percent) {
+                            percent = percent * 100 + '%';
+                            return {
+                                name: title,
+                                value: percent
+                            };
+                        }).style({
+                            lineWidth: 1,
+                            stroke: '#fff'
+                        });
+                        chart.render();
+                        resolve('ok');
+                    }).catch(e => {
+                        console.log(e);
+                        reject();
+                    });
                 });
-                var data = [{
-                    item: '事例一',
-                    count: 40,
-                    percent: 0.4
-                }, {
-                    item: '事例二',
-                    count: 21,
-                    percent: 0.21
-                }, {
-                    item: '事例三',
-                    count: 17,
-                    percent: 0.17
-                }, {
-                    item: '事例四',
-                    count: 13,
-                    percent: 0.13
-                }, {
-                    item: '事例五',
-                    count: 9,
-                    percent: 0.09
-                }];
-                chart.source(data, {
-                    percent: {
-                        formatter: function formatter(val) {
-                            val = val * 100 + '%';
-                            return val;
-                        }
-                    }
-                });
-                chart.legend(false);
-                chart.coord('theta', {
-                    radius: 0.75
-                });
-                chart.tooltip({
-                    showTitle: false,
-                    itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
-                });
-                chart.axis('percent', {
-                    label: {
-                        textStyle: {
-                            fill: "#fff",
-                        }
-                    }
-                });
-                chart.intervalStack().position('percent').color('item').label('percent', {
-                    formatter: function formatter(val, item) {
-                        return item.point.item + ': ' + val;
-                    },
-                    textStyle: {
-                        fill: "#fff",
-                    },
-                }).tooltip('item*percent', function (item, percent) {
-                    percent = percent * 100 + '%';
-                    return {
-                        name: item,
-                        value: percent
-                    };
-                }).style({
-                    lineWidth: 1,
-                    stroke: '#fff'
-                });
-                chart.render();
             },
             level_chart() {
-                const data = [
-                    {score: 12.42},
-                    {score: 12.42},
-                    {score: 12.42},
-                    {score: 12.42},
-                    {score: 12.42},
-                    {score: 12.42},
-                ];
-                this.levelData = data;
-                this.countUp_reset();
+                return new Promise((resolve, reject) => {
+                    this.$axios.get(levelUrl).then(res => {
+                        const data = res.data.msg;
+                        this.levelData = data;
+                        this.countUp_reset();
+                        resolve('ok');
+                    }).catch(e => {
+                        console.log(e);
+                        reject();
+                    });
+                });
             },
             countUp_start() {
                 for (let item of this.counter) {
@@ -184,11 +176,20 @@
             },
         },
         mounted() {
+            this.$Spin.show();
             this.init_count();
-            this.birthday_chart();
-            this.sex_chart();
             this.countUp_start();
-            this.level_chart();
+            Promise.all([
+                this.birthday_chart(),
+                this.sex_chart(),
+                this.level_chart()
+            ]).then(v => {
+                console.log(v)
+                this.$Spin.hide();
+            }).catch(e => {
+                console.log(e);
+                this.$Spin.hide();
+            });
         }
     }
 </script>
@@ -205,7 +206,6 @@
     text-align: center;
     z-index: 2;
     flex-direction: column;
-    /*background-color: ;*/
 
     .content {
       flex: 0 0 auto;
@@ -216,7 +216,6 @@
       width: 100%;
       height: 750px;
       flex-direction: column;
-      /*background-color: #dfccff;*/
 
       .line {
         display: flex;
@@ -235,7 +234,6 @@
       .chart {
         width: 90%;
         height: 400px;
-        /*background-color: #9aceff;*/
       }
 
       .birthday {
@@ -245,7 +243,6 @@
         height: 450px;
         flex-direction: column;
         align-items: center;
-        /*background-color: #b9ffc3;*/
       }
 
       .sex {
@@ -255,7 +252,6 @@
         height: 450px;
         flex-direction: column;
         align-items: center;
-        /*background-color: #ffca99;*/
       }
 
       .level {
@@ -263,6 +259,7 @@
         display: flex;
         flex-direction: column;
         margin-top: 10px;
+        user-select: none;
 
         .level-chart {
           flex: 0 0 auto;

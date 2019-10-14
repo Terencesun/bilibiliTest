@@ -13,6 +13,7 @@
   "dependencies": {
     "@antv/g2": "^3.5.8",
     "@nuxtjs/axios": "^5.3.6",
+    "axios": "^0.19.0",
     "countup.js": "^2.0.4",
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
