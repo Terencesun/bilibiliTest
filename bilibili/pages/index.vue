@@ -225,7 +225,8 @@
       }
 
       .title {
-        font-size: 20px;
+        font-family: "meow";
+        font-size: 22px;
         letter-spacing: 2px;
         margin-bottom: 10px;
         color: #fff;
@@ -312,7 +313,8 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      font-size: 16px;
+      font-family: "meow";
+      font-size: 20px;
       color: #ffffff;
       font-weight: 600;
     }
