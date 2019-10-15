@@ -65,13 +65,6 @@
             }
         },
         methods: {
-            init_count() {
-                for (let count = 0; count < this.levelData.length; count++) {
-                    this.counter.push(new CountUp(`level_${count+1}`, this.levelData[count].score, {
-                        useGrouping: false,
-                    }));
-                }
-            },
             init_info() {
                 return new Promise((resolve, reject) => {
                     this.$axios.get(apiUrl).then(res => {
@@ -108,7 +101,7 @@
                             }
                         });
                         chart.legend(false);
-                        chart.interval().position('quarter*count').color('quarter');
+                        chart.interval().position('quarter*count').color('quarter', ['#40c5ff', '#ff5f81', '#fb7a5c', '#64d8ac']);
                         this.render.push(chart);
                         resolve('ok');
                     }).catch(e => {
@@ -149,7 +142,7 @@
                                 }
                             }
                         });
-                        chart.intervalStack().position('percent').color('title').label('percent', {
+                        chart.intervalStack().position('percent').color('title', ['#ff5f81', '#ffe971', '#40c5ff']).label('percent', {
                             formatter: function formatter(val, item) {
                                 return item.point.title + ': ' + val;
                             },
@@ -179,6 +172,7 @@
                     this.$axios.get(levelUrl).then(res => {
                         const data = res.data.msg;
                         this.levelData = data;
+                        console.log(this.levelData)
                         resolve('ok');
                     }).catch(e => {
                         console.log(e);
@@ -194,7 +188,6 @@
         },
         mounted() {
             this.$Spin.show();
-            this.init_count();
             Promise.all([
                 this.init_info(),
                 this.birthday_chart(),
