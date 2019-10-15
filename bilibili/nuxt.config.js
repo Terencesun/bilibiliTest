@@ -31,7 +31,7 @@ module.exports = {
   */
   plugins: [
     '@/plugins/iview',
-    '@/plugins/axios'
+    '@/plugins/axios',
   ],
   /*
   ** Nuxt.js dev-modules
