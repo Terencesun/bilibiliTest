@@ -27,14 +27,14 @@
       </div>
     </div>
     <div class="footer">
-      <div>有效样本数据：100000，截止日期：2019-10-14</div>
+      <div>有效样本数据：{{ info.sample }}，截止日期：{{ info.date | date_filter }}</div>
       <div>Author: Terence.Sun 禁止商业使用</div>
     </div>
   </div>
 </template>
 
 <script>
-    import {brithdayUrl, sexUrl, levelUrl} from "./../api";
+    import {brithdayUrl, sexUrl, levelUrl, apiUrl} from "./../api";
     import G2 from '@antv/g2';
     import {CountUp} from 'countup.js';
 
@@ -50,6 +50,17 @@
                     {score: 0},
                 ],
                 counter: [],
+                render: [],
+                info: {
+                    sample: 0,
+                    date: null,
+                },
+            }
+        },
+        filters: {
+            date_filter(val) {
+                const date = new Date(val);
+                return `${date}`
             }
         },
         methods: {
@@ -59,6 +70,17 @@
                         useGrouping: false,
                     }));
                 }
+            },
+            init_info() {
+                return new Promise((resolve, reject) => {
+                    this.$axios.get(apiUrl).then(res => {
+                        this.info = res.data.msg;
+                        resolve('ok');
+                    }).catch(e => {
+                        console.log(e);
+                        reject();
+                    });
+                });
             },
             birthday_chart() {
                 return new Promise((resolve, reject) => {
@@ -86,7 +108,7 @@
                         });
                         chart.legend(false);
                         chart.interval().position('quarter*count').color('quarter');
-                        chart.render();
+                        this.render.push(chart);
                         resolve('ok');
                     }).catch(e => {
                         console.log(e);
@@ -143,7 +165,7 @@
                             lineWidth: 1,
                             stroke: '#fff'
                         });
-                        chart.render();
+                        this.render.push(chart);
                         resolve('ok');
                     }).catch(e => {
                         console.log(e);
@@ -156,7 +178,6 @@
                     this.$axios.get(levelUrl).then(res => {
                         const data = res.data.msg;
                         this.levelData = data;
-                        this.countUp_reset();
                         resolve('ok');
                     }).catch(e => {
                         console.log(e);
@@ -174,18 +195,25 @@
                     this.counter[key].update(this.levelData[key].score);
                 }
             },
+            render_view() {
+                this.countUp_reset();
+                for (let item of this.render) {
+                    item.render();
+                }
+            }
         },
         mounted() {
             this.$Spin.show();
             this.init_count();
             this.countUp_start();
             Promise.all([
+                this.init_info(),
                 this.birthday_chart(),
                 this.sex_chart(),
                 this.level_chart()
             ]).then(v => {
-                console.log(v)
                 this.$Spin.hide();
+                this.render_view();
             }).catch(e => {
                 console.log(e);
                 this.$Spin.hide();
