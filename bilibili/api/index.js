@@ -1,4 +1,4 @@
-const url = 'http://127.0.0.1:47890'
+const url = 'http://192.168.218.47:47890'
 
 export const brithdayUrl = `${url}/birthday`;
 export const sexUrl = `${url}/sex`;
