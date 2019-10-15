@@ -19,8 +19,8 @@
         <div class="title">B站用户等级分布</div>
         <div class="level-chart">
           <div class="circle-wrap" v-for="(item, key) of levelData">
-            <div class="level-title">Level {{ key + 1 }}</div>
-            <div class="level-score" :id="`level_${key+1}`"></div>
+            <div class="level-title">Level {{ key }}</div>
+            <div class="level-score" :id="`level_${key}`">{{ item.score }}</div>
             <span>%</span>
           </div>
         </div>
@@ -48,6 +48,7 @@
                     {score: 0},
                     {score: 0},
                     {score: 0},
+                    {score: 0},
                 ],
                 counter: [],
                 render: [],
@@ -66,7 +67,7 @@
         methods: {
             init_count() {
                 for (let count = 0; count < this.levelData.length; count++) {
-                    this.counter.push(new CountUp(`level_${count + 1}`, this.levelData[count].score, {
+                    this.counter.push(new CountUp(`level_${count+1}`, this.levelData[count].score, {
                         useGrouping: false,
                     }));
                 }
@@ -185,18 +186,7 @@
                     });
                 });
             },
-            countUp_start() {
-                for (let item of this.counter) {
-                    item.start();
-                }
-            },
-            countUp_reset() {
-                for (let key = 0; key < this.counter.length; key++) {
-                    this.counter[key].update(this.levelData[key].score);
-                }
-            },
             render_view() {
-                this.countUp_reset();
                 for (let item of this.render) {
                     item.render();
                 }
@@ -205,7 +195,6 @@
         mounted() {
             this.$Spin.show();
             this.init_count();
-            this.countUp_start();
             Promise.all([
                 this.init_info(),
                 this.birthday_chart(),

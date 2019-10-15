@@ -13,16 +13,16 @@ export class AppController {
 
   @Get('birthday')
   async birthday() {
-    return await this.appService.info();
+    return await this.appService.birthday();
   }
 
   @Get('sex')
   async sex() {
-    return await this.appService.info();
+    return await this.appService.sex();
   }
 
   @Get('level')
   async level() {
-    return await this.appService.info();
+    return await this.appService.level();
   }
 }

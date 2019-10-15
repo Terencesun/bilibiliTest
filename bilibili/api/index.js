@@ -1,4 +1,6 @@
-export const brithdayUrl = `https://mock.nysolution.dev/mock/5da421c59540470becb7f8ae/bilibili/birthday`;
-export const sexUrl = `https://mock.nysolution.dev/mock/5da421c59540470becb7f8ae/bilibili/sex`;
-export const levelUrl = `https://mock.nysolution.dev/mock/5da421c59540470becb7f8ae/bilibili/level`;
-export const apiUrl = `https://mock.nysolution.dev/mock/5da421c59540470becb7f8ae/bilibili/info`;
+const url = 'http://127.0.0.1:47890'
+
+export const brithdayUrl = `${url}/birthday`;
+export const sexUrl = `${url}/sex`;
+export const levelUrl = `${url}/level`;
+export const apiUrl = `${url}/info`;
