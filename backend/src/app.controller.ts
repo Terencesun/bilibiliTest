@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
@@ -7,15 +8,21 @@ export class AppController {
 
   @Get('info')
   async info() {
-    return this.appService.info();
+    return await this.appService.info();
   }
 
   @Get('birthday')
-  async birthday() {}
+  async birthday() {
+    return await this.appService.info();
+  }
 
   @Get('sex')
-  async sex() {}
+  async sex() {
+    return await this.appService.info();
+  }
 
   @Get('level')
-  async level() {}
+  async level() {
+    return await this.appService.info();
+  }
 }
